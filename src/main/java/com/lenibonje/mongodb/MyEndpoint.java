@@ -3,10 +3,7 @@ package com.lenibonje.mongodb;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoIterable;
 import com.mongodb.client.result.InsertOneResult;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.bson.BsonValue;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -22,14 +19,20 @@ import java.util.List;
 @RestController
 public class MyEndpoint {
 
+    private MongoClient mongoClient;
+
+    public MyEndpoint(AppConfig config) {
+        mongoClient = MongoDbClient.getMongoClient(config.connection());
+   }
+
     @GetMapping("/dbs")
     public List<String> retrieveData(){
-        return MongoDbClient.getMongoClient().listDatabaseNames().into(new ArrayList<>());
+        return mongoClient.listDatabaseNames().into(new ArrayList<String>());
     }
 
     @PostMapping("/students")
     public ResponseEntity<Student> addStudent(@RequestBody Student student){
-        MongoDatabase database = MongoDbClient.getMongoClient().getDatabase("school");
+        MongoDatabase database = mongoClient.getDatabase("school");
         MongoCollection<Document> students = database.getCollection("students");
         Document document = new Document("_id", new ObjectId())
                 .append("first_name", student.getFirstName())
