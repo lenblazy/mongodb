@@ -1,30 +1,38 @@
 package com.lenibonje.mongodb;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonKey;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.bson.types.ObjectId;
 
 public class Student {
 
-    @JsonIgnore
-    private String id;
+    @JsonProperty(value = "_id")
+    private MyObjectId id;
 
+    @JsonProperty(value = "first_name")
     private String firstName;
+    @JsonProperty(value = "last_name")
     private String lastName;
+
+    @JsonProperty(value = "age")
     private int age;
+
+    @JsonProperty(value = "gpa")
     private float gpa;
 
+    @JsonProperty(value = "full_time")
     private boolean fullTime;
 
     public Student() {
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+//    public ObjectId getId() {
+//        return id;
+//    }
+//
+//    public void setId(ObjectId id) {
+//        this.id = id;
+//    }
 
 
     public String getFirstName() {
@@ -67,3 +75,4 @@ public class Student {
         this.fullTime = fullTime;
     }
 }
+
